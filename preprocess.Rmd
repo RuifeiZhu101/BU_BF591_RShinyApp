@@ -1,0 +1,28 @@
+---
+title: "final_project_data_preprocess"
+author: "Ruifei Zhu"
+date: "2023-04-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+HD_data <- read.delim("data/HD_sampleinfo.txt")
+Control_data <- read.delim("data/Control_sampleinfo.txt")
+sample_information <- bind_rows(HD_data,Control_data)
+write_csv(sample_information,"data/sample_information.csv",na="NA")
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
