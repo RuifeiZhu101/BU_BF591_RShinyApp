@@ -12,7 +12,6 @@ library(DT)
 
 # User Interface
 ui <- fluidPage(
-
     # Application title
     titlePanel("BF591 Final Project - R Shiny Application for RNA-seq data exploration"),
     p("A demo dataset to help you understand the use of this application can be downloaded from the data directory of this app's repository."),
