@@ -112,7 +112,7 @@ server <- function(input, output, session) {
   # render clustered heatmap
   output$heatmap <- renderPlot({plot_heatmap(filtered_df,
                                              input$log_trans)},
-                               width = 1000, height = 1200)
+                               width = 600, height = 600)
   # render pca plot
   output$pca_plot <- renderPlot({plot_pca(filtered_df,
                                           input$pc1,
