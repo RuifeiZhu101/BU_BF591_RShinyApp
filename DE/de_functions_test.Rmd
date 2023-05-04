@@ -1,0 +1,22 @@
+---
+title: "Bf591 Final Project Counts tab"
+author: "Ruifei Zhu"
+output: html_document
+---
+
+```{r setup, include=FALSE, results='hide'}
+#Source your main
+source("de_functions.R")
+```
+
+### import de data
+
+```{r}
+deseq_res <- load_de_data("~/Documents/GitHub/BF591_FinalProject_RShiny/data/GSE64810_mlhd_DESeq2_diffexp_DESeq2_outlier_trimmed_adjust.csv")
+head(deseq_res)
+```
+
+### volcano test
+```{r}
+volcano_plot(deseq_res,"log2FoldChange","padj",-10,"#22577A","#FFCF56")
+```
