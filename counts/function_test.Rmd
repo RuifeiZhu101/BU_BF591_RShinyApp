@@ -1,0 +1,36 @@
+---
+title: "Bf591 Final Project Counts tab"
+author: "Ruifei Zhu"
+output: html_document
+---
+
+```{r setup, include=FALSE, results='hide'}
+#Source your main
+source("functions.R")
+```
+
+### import counts data
+
+```{r}
+counts_df <- load_counts_data("~/Documents/GitHub/BF591_FinalProject_RShiny/data/GSE64810_mlhd_DESeq2_norm_counts_adjust.csv")
+head(counts_df)
+```
+
+### Apply filter_data()
+
+```{r}
+filtered_df <- filter_data(counts_df,0.6,5)
+head(filtered_df)
+```
+### diagnostic scatter plot
+```{r}
+plot_scatter(counts_df,0.8,10)
+```
+### heatmap
+```{r}
+plot_heatmap(filtered_df,TRUE)
+```
+### pca plot
+```{r}
+plot_pca(filtered_df,1,2)
+```

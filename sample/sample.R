@@ -9,18 +9,19 @@ library(colourpicker) # you might need to install this.
 library(DT)
 
 
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
     # Application title
-    titlePanel("Sample"),
+    titlePanel("Sample Information Exploration"),
 
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
           fileInput("sampleinfo_file",
-                    "Load sample information matrix in CSV format", 
-                    placeholder = "sample_info.csv", 
+                    "Load sample information matrix in CSV format:", 
+                    placeholder = "sample_metadata.csv", 
                     accept = ".csv"),
           # Submit button
           actionButton(inputId = "submit_sampleinfo",label = "Submit")
