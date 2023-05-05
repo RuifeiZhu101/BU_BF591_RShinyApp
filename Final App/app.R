@@ -346,23 +346,29 @@ server <- function(input, output, session) {
       draw_table(deseq_res,input$slider)
     })
     #<----------------------------GSEA server------------------------------>
-    # upload new fgsea dataset on submission
-    load_fgsea_data <- reactive({
-      req(input$submit_fgsea)
-      req(input$fgsea_file)
-      fgsea_res <-read.csv(input$fgsea_file$datapath)
+    # Use the reactive value to load the DE data and run fgsea
+    fgsea_file <- reactive({
+      deseq_res <- load_de_data()
+      if (input$submit_fgsea && !is.null(input$fgsea_file)) {
+        # Use uploaded FGSEA file
+        fgsea_res <- read.csv(input$fgsea_file$datapath)
+      } else {
+        # Run FGSEA using DE seq results file
+        fgsea_res <- run_gsea(deseq_res, 'c2.cp.v7.5.1.symbols.gmt')
+      }
       return(fgsea_res)
     })
     
+
     # render top pathways barplot
     output$pathways_barplot <- renderPlot({
-      fgsea_res <- load_fgsea_data()
+      fgsea_res <- fgsea_file()
       top_pathways(fgsea_res, input$top_n)
     })
     
     # render filtered fgsea data table
     output$gsea_table <- renderDataTable({
-      fgsea_res <- load_fgsea_data()
+      fgsea_res <-  fgsea_file()
       filtered_fgsea <- filter_fgsea(fgsea_res,input$padj_cutoff, input$nes_direction)
     })
     
@@ -372,7 +378,7 @@ server <- function(input, output, session) {
         paste("data-", Sys.Date(), ".csv", sep="")
       },
       content = function(file) {
-        fgsea_res <- load_fgsea_data()
+        fgsea_res <- fgsea_file()
         filtered_fgsea <- filter_fgsea(fgsea_res, input$padj_cutoff, input$nes_direction)
         write.csv(filtered_fgsea, file)
       }
@@ -380,7 +386,7 @@ server <- function(input, output, session) {
     
     # render NES scatter plot
     output$nes_scatter <- renderPlot({
-      fgsea_res <- load_fgsea_data()
+      fgsea_res <- fgsea_file()
       plot_nes_scatter(fgsea_res,input$padj_cutoff_scatter)
     })
 }
