@@ -15,9 +15,7 @@ ui <- fluidPage(
 
     # Application title
     titlePanel("Differential Expression"),
-    p("Differential expression identifies which genes, if any, 
-      are implicated in a specific biological comparison. 
-      This component allows the user to load and explore a differential expression dataset."),
+    p("This component allows the user to load and explore a differential expression dataset."),
     sidebarLayout(
         sidebarPanel(
             fileInput("de_file",

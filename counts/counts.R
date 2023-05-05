@@ -8,7 +8,7 @@ library(ggplot2)
 library(colourpicker) # you might need to install this.
 library(DT)
 library(tidyverse)
-source("functions.R")
+source("counts_functions.R")
 
 
 # Define UI for application that draws a histogram

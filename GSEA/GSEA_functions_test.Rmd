@@ -1,0 +1,35 @@
+---
+title: "GSEA"
+output: html_document
+---
+```{r setup, message=FALSE, warning=FALSE}
+source('GSEA_functions.R')
+```
+### load deseq results
+```{r}
+deseq_res <- load_de_data("~/Documents/GitHub/BF591_FinalProject_RShiny/data/GSE64810_mlhd_DESeq2_diffexp_DESeq2_outlier_trimmed_adjust.csv")
+head(deseq_res,10)
+```
+### run fsea
+```{r}
+fgsea_res <- run_gsea(deseq_res,'c2.cp.v7.5.1.symbols.gmt')
+head(fgsea_res)
+```
+
+```{r}
+write_csv(fgsea_res,"~/Documents/GitHub/BF591_FinalProject_RShiny/data/fgsea_results.csv")
+```
+
+### top pathways barplot
+```{r}
+top_pathways(fgsea_res,10)
+```
+### filter fgsea data
+```{r}
+filtered_fgsea <- filter_fgsea(fgsea_res,0.05,'All')
+head(filtered_fgsea)
+```
+### scatter plot
+```{r}
+plot_nes_scatter(fgsea_res,0.05)
+```
