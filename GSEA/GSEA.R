@@ -71,7 +71,7 @@ server <- function(input, output,session) {
   load_fgsea_data <- reactive({
     req(input$submit_fgsea)
     req(input$fgsea_file)
-    counts_df <-read.csv(input$fgsea_file$datapath)
+    fgsea_res <-read.csv(input$fgsea_file$datapath)
     return(fgsea_res)
   })
   
@@ -83,13 +83,29 @@ server <- function(input, output,session) {
   
   # render filtered fgsea data table
   output$gsea_table <- renderDataTable({
+    fgsea_res <- load_fgsea_data()
     filtered_fgsea <- filter_fgsea(fgsea_res,input$padj_cutoff, input$nes_direction)
-  })
+    })
+  
+  # download filtered fgsea data table
+  output$download_table <- downloadHandler(
+    filename = function() {
+      paste("data-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      fgsea_res <- load_fgsea_data()
+      filtered_fgsea <- filter_fgsea(fgsea_res, input$padj_cutoff, input$nes_direction)
+      write.csv(filtered_fgsea, file)
+    }
+  )
   
   # render NES scatter plot
   output$nes_scatter <- renderPlot({
+    fgsea_res <- load_fgsea_data()
     plot_nes_scatter(fgsea_res,input$padj_cutoff_scatter)
   })
+  
+
 }
 
 # Run the application 

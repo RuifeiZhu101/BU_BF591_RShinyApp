@@ -76,9 +76,7 @@ server <- function(input, output, session) {
           sprintf("%.2f (+/- %.2f)", mean(x,na.rm = TRUE), sd(x,na.rm = TRUE))
         } else if (is.factor(x) | is.character(x)) {
           paste(unique(x), collapse = ", ")
-        } else {
-          ""
-        }
+        } else {""}
       })
     )
     DT::datatable(summary_data,

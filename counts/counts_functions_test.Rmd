@@ -6,7 +6,7 @@ output: html_document
 
 ```{r setup, include=FALSE, results='hide'}
 #Source your main
-source("functions.R")
+source("counts_functions.R")
 ```
 
 ### import counts data

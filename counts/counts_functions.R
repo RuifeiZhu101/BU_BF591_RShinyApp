@@ -33,8 +33,8 @@ filter_data <- function(counts_df, var_filter, nonzero_filter){
   
   # Filter genes based on variance and nonzero sample cutoffs
   filtered_gene <- df %>%
-    filter(gene_vars >= var_cutoff, gene_nonzero >= nonzero_filter) %>%
-    select(gene)
+    dplyr::filter(gene_vars >= var_cutoff, gene_nonzero >= nonzero_filter) %>%
+    dplyr::select(gene)
   
   # Filter original data based on selected genes
   filtered_df<- counts_df %>% filter(gene %in% filtered_gene$gene)
