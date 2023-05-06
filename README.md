@@ -1,7 +1,6 @@
-# Project Description
-BU BF591 Final Project - RShiny App
-For the final project I developed an R Shiny application that features multiple bioinformatics processes implemented in R to explore RNA-seq analysis data. The final application contains four components:  Sample Information Exploration, Counts Matrix Exploration, Differential Expression and Gene enrichment analysis.
-The application is designed to explore a dataset that was obtained by RNA-seq analysis of RNA-seq data from 20 Huntington's disease and 49 neurologically normal human post-mortem control samples. The dataset used in this application can be accessed on GEO (GSE64810) or downloaded from the `data` directory in this repo.
+# BU BF591 Final Project - RShiny App
+
+For this project, I developed an R Shiny application to examine a gene expression dataset comprised of RNASeq data from 20 individuals with Huntington's disease and 49 control samples. This dataset can be accessed on GEO (GSE64810) or downloaded from the `data` directory in this repo.
 
 # Contributors
 
