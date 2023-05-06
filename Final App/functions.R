@@ -131,8 +131,8 @@ plot_scatter <- function(counts_df, var_filter, nonzero_filter) {
     geom_point() +  
     scale_colour_manual(values = c("No" = "grey", "Yes" = "black")) + 
     labs(title = "Variance vs. Median Counts",
-         x = "Gene count median(log10 scale)",
-         y = "Gene count variance(log10 scale)") +
+         x = "log10(Gene count median + 1)",
+         y = "log10(Gene count variance)") +
     theme_bw()
   
   
@@ -146,7 +146,7 @@ plot_scatter <- function(counts_df, var_filter, nonzero_filter) {
     geom_point() +  
     scale_colour_manual(values = c("No" = "grey", "Yes" = "black")) + 
     labs(title = "number of zeros vs. Median Counts  ",
-         x = "Gene count median(log10 scale)",
+         x = "log10(Gene count median + 1)",
          y = "Number of samples with zero count") +
     theme_bw()
   return(list(p_var_median,p_median_zeros))
@@ -172,7 +172,7 @@ plot_heatmap <- function(filtered_df,log_trans) {
   }
   # create heatmap with color bar
   heatmap.2(heatmap_df, 
-          col=brewer.pal(11, "YlOrRd"), 
+          col=brewer.pal(9, "YlOrRd"), 
           main = "Clustered Heatmap of Filtered Counts")
 }
 

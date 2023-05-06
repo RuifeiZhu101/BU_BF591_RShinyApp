@@ -13,11 +13,12 @@ source("functions.R")
 
 
 
+
 # User Interface
 ui <- fluidPage(
     # Application title
-    titlePanel("BF591 Final Project - R Shiny Application for RNA-seq data exploration"),
-    p("A demo dataset to help you understand the use of this application can be downloaded from the data directory of this app's repository."),
+    titlePanel("BF591 Final Project - RShiny"),
+    p("This app was developed to explore the Huntington's Disease dataset from (Labadorf et al., 2016)."),
     # Create a tabset that includes four tabs: Sample, Counts, DE, GSEA
     tabsetPanel(
      ##-------Sample UI----
@@ -143,7 +144,7 @@ ui <- fluidPage(
                                                                                                              'pvalue',
                                                                                                              'padj'), 
                                   selected = 'log2FoldChange'),
-                     radioButtons(inputId = 'yaxis', label = 'Choose the column for the x-axis', choices = c('baseMean',
+                     radioButtons(inputId = 'yaxis', label = 'Choose the column for the y-axis', choices = c('baseMean',
                                                                                                              'log2FoldChange', 
                                                                                                              'lfcSE',
                                                                                                              'stat',
@@ -164,7 +165,7 @@ ui <- fluidPage(
                    # Show a plot of the generated distribution
                    mainPanel(
                      tabsetPanel(
-                       tabPanel("Plot",
+                       tabPanel("Volcano Plot",
                                 plotOutput("volcano")
                        ),
                        tabPanel("Table",
@@ -176,6 +177,7 @@ ui <- fluidPage(
       ##-------- GSEA UI---
         tabPanel("GSEA",
                  h3("Gene Set Enrichment Analysis with fgsea"),
+                 p("This page will automatically load the results from the differential expression tab, and return fgsea results."),
                  sidebarLayout(
                    sidebarPanel(
                      fileInput("fgsea_file",
@@ -190,10 +192,7 @@ ui <- fluidPage(
                        tabPanel("Top Pathways",
                                 sidebarLayout(
                                   sidebarPanel(sliderInput("top_n", "Number of top pathways to plot by adjusted p-value:",
-                                                           min = 1, max = 50, value = 10),
-                                               tags$hr(),
-                                               tags$p("Click on a bar to display table entry"),
-                                               verbatimTextOutput("selected_pathway")),
+                                                           min = 1, max = 50, value = 10)),
                                   mainPanel(
                                     plotOutput("pathways_barplot")
                                   )
@@ -352,11 +351,12 @@ server <- function(input, output, session) {
     ##-----------GSEA server---
     # Use the reactive value to load the DE data and run fgsea
     fgsea_file <- reactive({
-      deseq_res <- load_de_data()
       if (input$submit_fgsea && !is.null(input$fgsea_file)) {
         # Use uploaded FGSEA file
         fgsea_res <- read.csv(input$fgsea_file$datapath)
       } else {
+        #load deseq data
+        deseq_res <- load_de_data()
         # Run FGSEA using DE seq results file
         fgsea_res <- run_gsea(deseq_res, 'c2.cp.v7.5.1.symbols.gmt')
       }
@@ -387,7 +387,6 @@ server <- function(input, output, session) {
         write.csv(filtered_fgsea, file)
       }
     )
-    
     # render NES scatter plot
     output$nes_scatter <- renderPlot({
       fgsea_res <- fgsea_file()
