@@ -5,6 +5,8 @@ library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library('fgsea')
+library(gplots)
+library(RColorBrewer)
 
 #' Function to create a summary table for sample information
 #'
@@ -169,15 +171,9 @@ plot_heatmap <- function(filtered_df,log_trans) {
     heatmap_df <- heatmap_df
   }
   # create heatmap with color bar
-  heatmap(heatmap_df, 
-          col=brewer.pal(11, "RdBu"), 
-          main = "Clustered Heatmap of Filtered Counts",
-          cexRow=.5)
-  # Plot a legend in bottom right part of heatmap
-  legend(x = "bottomright", 
-         legend = c("low", "medium", "high"),
-         fill= colorRampPalette(brewer.pal(11, "RdBu"))(3)
-  )
+  heatmap.2(heatmap_df, 
+          col=brewer.pal(11, "YlOrRd"), 
+          main = "Clustered Heatmap of Filtered Counts")
 }
 
 #' A function to create a scatter plot of principal component analysis projections 

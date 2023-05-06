@@ -20,7 +20,7 @@ ui <- fluidPage(
     p("A demo dataset to help you understand the use of this application can be downloaded from the data directory of this app's repository."),
     # Create a tabset that includes four tabs: Sample, Counts, DE, GSEA
     tabsetPanel(
-     #<----------------------------Sample UI-------------------------------->
+     ##-------Sample UI----
       tabPanel("Samples",
                h3("Sample Information Exploration"),
                p("The distinct values and distributions of sample information are important to understand before conducting analysis of corresponding sample data. 
@@ -59,7 +59,8 @@ ui <- fluidPage(
                    ),
                  ),
                ),
-      #<----------------------------Counts UI------------------------------>
+      
+      ##------Counts UI---
         tabPanel("Counts",
                  h3("Counts Matrix Exploration"),
                  p("Exploring and visualizing counts matrices can aid in 
@@ -122,7 +123,7 @@ ui <- fluidPage(
                    )
                  )
               ),
-      #<----------------------------DE UI------------------------------>
+      ##----------DE UI---
         tabPanel("DE",
                  h3("Differential Expression"),
                  p("This component allows the user to load and explore a differential expression dataset."),
@@ -172,7 +173,7 @@ ui <- fluidPage(
                    )
                  ) 
         ),
-      #<---------------------------- GSEA UI------------------------------>
+      ##-------- GSEA UI---
         tabPanel("GSEA",
                  h3("Gene Set Enrichment Analysis with fgsea"),
                  sidebarLayout(
@@ -228,7 +229,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  #<---------------------------- Sample Server------------------------------>
+  ##-------Sample Server---
   #' load metadata on submission
   load_metadata <- reactive({
     req(input$submit_sampleinfo)
@@ -278,7 +279,7 @@ server <- function(input, output, session) {
       df[[group_var]] <- factor(df[[group_var]])
       plot_sample_hist(df,x_var ,group_var )
     })
-    #<----------------------------Counts server------------------------------>
+    ##------------Counts server---
     
     options(shiny.maxRequestSize=30*1024^2) #increase the upload file limit to 30MB
     
@@ -312,16 +313,19 @@ server <- function(input, output, session) {
     })
     
     # render clustered heatmap
-    output$heatmap <- renderPlot({plot_heatmap(filtered_df,
-                                               input$log_trans)},
-                                 width = 600, height = 600)
+    output$heatmap <- renderPlot({
+      counts_df <- load_counts_data()
+      filtered_df <- filter_data(counts_df, input$var_cutoff, input$nonzero_cutoff)
+      plot_heatmap(filtered_df,input$log_trans)},
+      width = 600, height = 600)
     # render pca plot
-    output$pca_plot <- renderPlot({plot_pca(filtered_df,
-                                            input$pc1,
-                                            input$pc2)
+    output$pca_plot <- renderPlot({
+      counts_df <- load_counts_data()
+      filtered_df <- filter_data(counts_df, input$var_cutoff, input$nonzero_cutoff)
+      plot_pca(filtered_df,input$pc1,input$pc2)
     })
     
-    #<----------------------------DE server------------------------------>
+    #------------DE server---
     #' load_data on submission
     load_de_data <- reactive({
       req(input$de_file)
@@ -345,7 +349,7 @@ server <- function(input, output, session) {
       deseq_res <- load_de_data()
       draw_table(deseq_res,input$slider)
     })
-    #<----------------------------GSEA server------------------------------>
+    ##-----------GSEA server---
     # Use the reactive value to load the DE data and run fgsea
     fgsea_file <- reactive({
       deseq_res <- load_de_data()
